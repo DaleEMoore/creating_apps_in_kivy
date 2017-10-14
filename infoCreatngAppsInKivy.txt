@@ -1,5 +1,13 @@
 From: https://github.com/oreillymedia/creating_apps_in_kivy
 Originally just the ZIP file, but I decomposed it to be able to easily use it.
 
+
+
+TODO
+Complete the project.
+5-13-14_image_icons does not get errors and launches kivy.
+
+
+
 Sat 14 Oct 2017 1:56 PM CST
 Created
