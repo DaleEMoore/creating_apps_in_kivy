@@ -1,0 +1,76 @@
+From: https://github.com/oreillymedia/creating_apps_in_kivy
+Originally just the ZIP file, but I decomposed it to be able to easily use it.
+
+
+
+TODO
+
+Fix the code to not have to have "&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d" in the URL. Keep it in some
+configuration file and read it so I can publish this code at GitHub without having to reveal my APPID.
+
+Complete the project using Python3.
+5-13-14_image_icons does not get errors and launches kivy.
+
+Continue reading the book
+https://play.google.com/books/reader?printsec=frontcover&output=reader&id=UGvhHgAAAEAJ&pg=GBS.PA58
+and validating the project code.
+
+
+
+
+Sat 14 Oct 2017 1:56 PM CST
+Created
+
+
+Sun 15 Oct 2017 10:47 AM CST
+Several files have a string continued over a line break, the first line ending in " +". The fix for this syntax error
+can be adding a " \" at the end of the first line, or surrounding the string with "(" and ")". I opted for "(" and ")".
+
+
+I think that the interface to Internet weather lookup is failing!
+    Where does the search first appear?
+    2-07_print_search_value/main.py prints the user input.
+    Uses something like this:
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
+    I think it's first used in 2-10_set_list_view/main.py.
+
+    http://api.openweathermap.org/data/2.5/find?q={san}&type=like
+    returns:
+        {
+        cod: 401,
+        message: "Invalid API key. Please see http://openweathermap.org/faq#error401 for more info."
+        }
+    http://openweathermap.org/faq#error401
+        Q: API calls return an error 401
+        A: Starting from 9 October 2015 our API requires a valid APPID for access. Note that this does not mean that our API is subscription-only
+        now - please take a minute to register a free account to receive a key.
+
+        We are sorry for inconvenience but this is a necessary measure that will help us deliver our services to you faster and more reliably.
+
+        For FOSS developers: we welcome free and open source software and are willing to help you. If you want to use OWM data in your free
+        software application please register an API key and file a ticket describing your application and API key registered. OWM will review
+        your request lift access limits for your key if used in open source application.
+
+    Got OpenWeatherMap.Org/appid
+    For DaleEMoore: APIKEY = 7d8718e2e34ca1681eda783f8d0a999d
+    Use http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
+    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+
+    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+
+    http://api.openweathermap.org/data/2.5/find?q={san}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    http://api.openweathermap.org/data/2.5/find?q={palo}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+
+Complete OpenWeatherMap.Org API improvements
+    http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    5-13-14_image_icons
+    Menu Edit, Find, Find in path,
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
+    and change it to:
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
+    And find other API.OpenWeatherMap.Org calls and fix them too!
+    Still in 5-13-14_image_icons:
+        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
+        #weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric"
+
