@@ -1,4 +1,5 @@
 From: https://github.com/oreillymedia/creating_apps_in_kivy
+https://github.com/DaleEMoore/creating_apps_in_kivy
 Originally just the ZIP file, but I decomposed it to be able to easily use it.
 
 
