@@ -10,6 +10,7 @@ from kivy.uix.listview import ListItemButton
 from kivy.factory import Factory
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.modalview import ModalView
+
 import os, sys # Add parent path to sys.path so secrets.py can be found.
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import secrets
@@ -131,7 +132,9 @@ class WeatherRoot(BoxLayout):
                     current_location=location)
 
         self.current_weather.update_weather()
-        self.add_widget(self.current_weather)
+        self.add_widget(self.current_weather) # TODO; Error kivy.uix.widget.WidgetException:
+        # Cannot add <__main__.CurrentWeather object at 0x7f4c3e63f320>,
+        # it already has a parent <kivy.uix.relativelayout.RelativeLayout object at 0x7f4c3e5bea08>
 
     def show_forecast(self, location=None):
         self.clear_widgets()

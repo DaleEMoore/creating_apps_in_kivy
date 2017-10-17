@@ -19,8 +19,10 @@ class GestureBox(BoxLayout):
     def __init__(self, **kwargs):
         for name in gesture_strings:
             self.register_event_type('on_{}'.format(name))
-        super(GestureBox, self).__init__
-        (**kwargs)
+        super(GestureBox, self).__init__(**kwargs) # From: https://stackoverflow.com/questions/3394835/args-and-kwargs
+        #super(GestureBox, self).__init__
+        #(**kwargs) # TODO; ERROR IN PYTHON2 & 3 "SyntaxError: invalid syntax"
+
 
     def on_left_to_right_line(self):
         pass

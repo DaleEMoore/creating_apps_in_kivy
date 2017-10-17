@@ -5,72 +5,20 @@ Originally just the ZIP file, but I decomposed it to be able to easily use it.
 
 
 TODO
-
-Fix the code to not have to have "&id=524901&APPID=" in the URL. Keep it in some
-configuration file and read it so I can publish this code at GitHub without having to reveal my APPID.
-    Researching googling, redditing, stackexchanging ... to determine what the community
-    feels is a good answer.
-    Right now I'm leaning towards putting these things in secrets.py that's in .gitignore
-    and documented in a secrets.template.py to show what goes there. Or maybe it's called
-    config.py and config.template.py. Don't distribute the config.py which is in use in
-    DEV, and TEST so that LIVE is configured, or setup or hand-crafted from config.template.py.
-    Or perhaps this should be secrets.sh or secrets.cmd to set ENVIRONMENT variables.
-
-    Name it secrets, credentials, config, ... what?
-
-    gitIgnore secrets.py.
-    secrets_template.py:
-        # These programs use secrets.py for access
-        login = {
-            'password' : 'some secret password goes here',
-            'consumer_secret' : 'the consumer_secret goes here'
-        }
-    secrets.py:
-        # These are secret things; DO NOT DISTRIBUTE!
-        login = {
-            'password' : 'YOUR_PASSWORD',
-            'consumer_secret' : 'YOUR_SECRET'
-        }
-    in your script:
-        import secrets
-        consumer_secret = secrets.login['consumer_secret']
-
-    Once the secrets.py is setup, convert programs here that already have the APPID and
-    verify, make certain, that the APPID is not in the GitHub open repository!
-
-    Setup secrets.py and gitIgnore.
-        In parent folder so just once.
-        secrets_template.py
-        secrets.py # File, Settings, Version Control, Ignored Files, settings.py.
-    Fix the code to use secrets.py starting in 3-14-15_add_location_event_handler.
-        import os, sys # Add parent path to sys.path so secrets.py can be found.
-        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        import secrets
-
-        weatherAPPID = secrets.login['weatherAPPID']
-        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={}"
-        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=..."
-        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
-        search_url = search_template.format(self.search_input.text, weatherAPPID)
-        #search_url = search_template.format(self.search_input.text)
-
-        or somewhat more complicated...
-
-        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID={}"
-        weatherAPPID = secrets.login['weatherAPPID']
-        weather_url = weather_template.format(*self.location, weatherAPPID)
-    Fix all the code! Every place APPID's used!
-        PyCharm Menu, Edit, Find, in Path, all but settings.py gone.
-    Verify the APPID will NOT go to GitHub!
-    Push the code.
-
 Test 8-03-05_modalview for weatherAPPID changes.
-    Failing on load or after 1st error
-    kivy.uix.widget.WidgetException: Cannot add <__main__.CurrentWeather object at 0x7f4864f78320>, it already has a parent <kivy.uix.relativelayout.RelativeLayout object at 0x7f4864ef5a08>
+    Failing on KV load with
+    kivy.uix.widget.WidgetException: Cannot add <__main__.CurrentWeather object at 0x7f4864f78320>,
+    it already has a parent <kivy.uix.relativelayout.RelativeLayout object at 0x7f4864ef5a08>
+
+    Maybe I have to delete weather_store.json before running this? That helps.
+    Gets main screen. Location lookup, select found location then dies again with "cannot add already has a parent".
+    delete weather_store.json, run, Lookup but do not select. No weather_store.json so it runs a second time.
+    Run locate "san antonio", select US results, creates weather_store.json and dies with "cannot add already has a parent".
+
+
+    I wonder what the best diagnostic tool is for this problem? kivi-designer might help?
+
     Same issue with 8-01-02_carousel!
-
-Test 7-09-12-gesture_fire for SyntaxError: invalid syntax; on (**kwargs).
-
 
 Complete the project using Python3.
 5-13-14_image_icons does not get errors and launches kivy.
@@ -137,4 +85,73 @@ Complete OpenWeatherMap.Org API improvements
         weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID={APIKEY}"
         #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={APIKEY}"
         #weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric"
+
+
+Tuesday 17 October 2017 2:28 PM CST
+
+Fix the code to not have to have "&id=524901&APPID=" in the URL. Keep it in some
+configuration file and read it so I can publish this code at GitHub without having to reveal my APPID.
+    Researching googling, redditing, stackexchanging ... to determine what the community
+    feels is a good answer.
+    Right now I'm leaning towards putting these things in secrets.py that's in .gitignore
+    and documented in a secrets.template.py to show what goes there. Or maybe it's called
+    config.py and config.template.py. Don't distribute the config.py which is in use in
+    DEV, and TEST so that LIVE is configured, or setup or hand-crafted from config.template.py.
+    Or perhaps this should be secrets.sh or secrets.cmd to set ENVIRONMENT variables.
+
+    Name it secrets, credentials, config, ... what?
+
+    gitIgnore secrets.py.
+    secrets_template.py:
+        # These programs use secrets.py for access
+        login = {
+            'password' : 'some secret password goes here',
+            'consumer_secret' : 'the consumer_secret goes here'
+        }
+    secrets.py:
+        # These are secret things; DO NOT DISTRIBUTE!
+        login = {
+            'password' : 'YOUR_PASSWORD',
+            'consumer_secret' : 'YOUR_SECRET'
+        }
+    in your script:
+        import secrets
+        consumer_secret = secrets.login['consumer_secret']
+
+    Once the secrets.py is setup, convert programs here that already have the APPID and
+    verify, make certain, that the APPID is not in the GitHub open repository!
+
+    Setup secrets.py and gitIgnore.
+        In parent folder so just once.
+        secrets_template.py
+        secrets.py # File, Settings, Version Control, Ignored Files, settings.py.
+    Fix the code to use secrets.py starting in 3-14-15_add_location_event_handler.
+        import os, sys # Add parent path to sys.path so secrets.py can be found.
+        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        import secrets
+
+        weatherAPPID = secrets.login['weatherAPPID']
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={}"
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=..."
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
+        search_url = search_template.format(self.search_input.text, weatherAPPID)
+        #search_url = search_template.format(self.search_input.text)
+
+        or somewhat more complicated...
+
+        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID={}"
+        weatherAPPID = secrets.login['weatherAPPID']
+        weather_url = weather_template.format(*self.location, weatherAPPID)
+    Fix all the code! Every place APPID's used!
+        PyCharm Menu, Edit, Find, in Path, all but settings.py gone.
+    Verify the APPID will NOT go to GitHub!
+    Push the code.
+
+
+Tuesday 17 October 2017 3:22 PM CST
+
+Test 7-09-12-gesture_fire for SyntaxError: invalid syntax; on (**kwargs).
+    super(GestureBox, self).__init__(**kwargs) # From: https://stackoverflow.com/questions/3394835/args-and-kwargs
+    #super(GestureBox, self).__init__
+    #(**kwargs) # TODO; ERROR IN PYTHON2 & 3 "SyntaxError: invalid syntax"
 
