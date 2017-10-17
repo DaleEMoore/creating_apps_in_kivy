@@ -6,8 +6,71 @@ Originally just the ZIP file, but I decomposed it to be able to easily use it.
 
 TODO
 
-Fix the code to not have to have "&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d" in the URL. Keep it in some
+Fix the code to not have to have "&id=524901&APPID=" in the URL. Keep it in some
 configuration file and read it so I can publish this code at GitHub without having to reveal my APPID.
+    Researching googling, redditing, stackexchanging ... to determine what the community
+    feels is a good answer.
+    Right now I'm leaning towards putting these things in secrets.py that's in .gitignore
+    and documented in a secrets.template.py to show what goes there. Or maybe it's called
+    config.py and config.template.py. Don't distribute the config.py which is in use in
+    DEV, and TEST so that LIVE is configured, or setup or hand-crafted from config.template.py.
+    Or perhaps this should be secrets.sh or secrets.cmd to set ENVIRONMENT variables.
+
+    Name it secrets, credentials, config, ... what?
+
+    gitIgnore secrets.py.
+    secrets_template.py:
+        # These programs use secrets.py for access
+        login = {
+            'password' : 'some secret password goes here',
+            'consumer_secret' : 'the consumer_secret goes here'
+        }
+    secrets.py:
+        # These are secret things; DO NOT DISTRIBUTE!
+        login = {
+            'password' : 'YOUR_PASSWORD',
+            'consumer_secret' : 'YOUR_SECRET'
+        }
+    in your script:
+        import secrets
+        consumer_secret = secrets.login['consumer_secret']
+
+    Once the secrets.py is setup, convert programs here that already have the APPID and
+    verify, make certain, that the APPID is not in the GitHub open repository!
+
+    Setup secrets.py and gitIgnore.
+        In parent folder so just once.
+        secrets_template.py
+        secrets.py # File, Settings, Version Control, Ignored Files, settings.py.
+    Fix the code to use secrets.py starting in 3-14-15_add_location_event_handler.
+        import os, sys # Add parent path to sys.path so secrets.py can be found.
+        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        import secrets
+
+        weatherAPPID = secrets.login['weatherAPPID']
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={}"
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=..."
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
+        search_url = search_template.format(self.search_input.text, weatherAPPID)
+        #search_url = search_template.format(self.search_input.text)
+
+        or somewhat more complicated...
+
+        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID={}"
+        weatherAPPID = secrets.login['weatherAPPID']
+        weather_url = weather_template.format(*self.location, weatherAPPID)
+    Fix all the code! Every place APPID's used!
+        PyCharm Menu, Edit, Find, in Path, all but settings.py gone.
+    Verify the APPID will NOT go to GitHub!
+    Push the code.
+
+Test 8-03-05_modalview for weatherAPPID changes.
+    Failing on load or after 1st error
+    kivy.uix.widget.WidgetException: Cannot add <__main__.CurrentWeather object at 0x7f4864f78320>, it already has a parent <kivy.uix.relativelayout.RelativeLayout object at 0x7f4864ef5a08>
+    Same issue with 8-01-02_carousel!
+
+Test 7-09-12-gesture_fire for SyntaxError: invalid syntax; on (**kwargs).
+
 
 Complete the project using Python3.
 5-13-14_image_icons does not get errors and launches kivy.
@@ -53,25 +116,25 @@ I think that the interface to Internet weather lookup is failing!
         your request lift access limits for your key if used in open source application.
 
     Got OpenWeatherMap.Org/appid
-    For DaleEMoore: APIKEY = 7d8718e2e34ca1681eda783f8d0a999d
+    For DaleEMoore: APIKEY = {APIKEY}
     Use http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
-    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
 
-    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
 
-    http://api.openweathermap.org/data/2.5/find?q={san}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
-    http://api.openweathermap.org/data/2.5/find?q={palo}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    http://api.openweathermap.org/data/2.5/find?q={san}&type=like&id=524901&APPID={APIKEY}
+    http://api.openweathermap.org/data/2.5/find?q={palo}&type=like&id=524901&APPID={APIKEY}
 
 Complete OpenWeatherMap.Org API improvements
-    http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d
+    http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={APIKEY}
     5-13-14_image_icons
     Menu Edit, Find, Find in path,
         search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like"
     and change it to:
-        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
+        search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={APIKEY}"
     And find other API.OpenWeatherMap.Org calls and fix them too!
     Still in 5-13-14_image_icons:
-        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
-        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID=7d8718e2e34ca1681eda783f8d0a999d"
+        weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&id=524901&APPID={APIKEY}"
+        #search_template = "http://api.openweathermap.org/data/2.5/find?q={}&type=like&id=524901&APPID={APIKEY}"
         #weather_template = "http://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric"
 
