@@ -15,6 +15,7 @@ Test 8-03-05_modalview for weatherAPPID changes.
     delete weather_store.json, run, Lookup but do not select. No weather_store.json so it runs a second time.
     Run locate "san antonio", select US results, creates weather_store.json and dies with "cannot add already has a parent".
 
+    Strange behavior, can't create, already there; but, doesn't exist...
 
     I wonder what the best diagnostic tool is for this problem? kivi-designer might help?
 

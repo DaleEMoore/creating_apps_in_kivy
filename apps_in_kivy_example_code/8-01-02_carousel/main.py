@@ -129,10 +129,21 @@ class WeatherRoot(BoxLayout):
                     current_location=location)
 
         self.current_weather.update_weather()
-        self.add_widget(self.current_weather) # TODO; kivy.uix.widget.WidgetException:
-        # Cannot add <__main__.CurrentWeather object at 0x7f4997ec6db0>,
-        # it already has a parent <kivy.uix.relativelayout.RelativeLayout object at 0x7f4997e5dad8>
-        pass
+        for c2 in list(self.children):
+            if isinstance(c2,CurrentWeather):
+                self.remove(c2)
+        # if widget(current_weather) already exists, remove.
+        if self.current_weather:
+            self.remove_widget(self.children[0])
+            #self.remove_widget(self.current_weather)
+            pass
+            #self.current_weather = None # ValueError: None is not allowed for WeatherRoot.current_weather
+            #del self.current_weather # NotImplementedError: __delete__
+        else:
+            pass
+        #for c2 in list(self.children):
+        #    if isinstance(c2,CurrentWeather): self.remove(c2)
+        self.add_widget(self.current_weather)
 
     def show_forecast(self, location=None):
         self.clear_widgets()
