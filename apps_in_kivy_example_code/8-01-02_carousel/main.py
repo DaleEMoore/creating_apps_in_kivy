@@ -134,7 +134,8 @@ class WeatherRoot(BoxLayout):
                 self.remove(c2)
         # if widget(current_weather) already exists, remove.
         if self.current_weather:
-            self.remove_widget(self.children[0])
+            # TODO; figure out how to not have duplicate widgets here!
+            self.remove_widget(self.children[0]) # IndexError: list index out of range
             #self.remove_widget(self.current_weather)
             pass
             #self.current_weather = None # ValueError: None is not allowed for WeatherRoot.current_weather
