@@ -129,22 +129,24 @@ class WeatherRoot(BoxLayout):
                     current_location=location)
 
         self.current_weather.update_weather()
-        for c2 in list(self.children):
-            if isinstance(c2,CurrentWeather):
-                self.remove(c2)
-        # if widget(current_weather) already exists, remove.
+        # Doesn't seem to work, no children though current_weather is present.
+        #for c2 in list(self.children):
+        #    if isinstance(c2,CurrentWeather):
+        #        self.remove(c2)
+        # TODO; figure out how to not have duplicate widgets here!
+        #       It's present in the .kv: "current_weather: current_weather"
         if self.current_weather:
-            # TODO; figure out how to not have duplicate widgets here!
-            self.remove_widget(self.children[0]) # IndexError: list index out of range
-            #self.remove_widget(self.current_weather)
             pass
+            #self.remove_widget(self.current_weather)
+            #self.remove_widget(self.children[0]) # IndexError: list index out of range
+            #self.remove_widget(self.children[0]) # IndexError: list index out of range
+            #self.remove_widget(self.current_weather)
             #self.current_weather = None # ValueError: None is not allowed for WeatherRoot.current_weather
             #del self.current_weather # NotImplementedError: __delete__
         else:
-            pass
+            self.add_widget(self.current_weather)
         #for c2 in list(self.children):
         #    if isinstance(c2,CurrentWeather): self.remove(c2)
-        self.add_widget(self.current_weather)
 
     def show_forecast(self, location=None):
         self.clear_widgets()
