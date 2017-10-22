@@ -5,6 +5,18 @@ Originally just the ZIP file, but I decomposed it to be able to easily use it.
 
 
 TODO
+Try creating_apps_in_kivy on PC jenOvo.
+    Try the last one 9-09-10_android_lookup_and_pause
+        from plyer import gps
+        ImportError: No module named 'plyer'
+    sudo pip install git+https://github.com/kivy/plyer.git@master
+    sudo pip3 install git+https://github.com/kivy/plyer.git@master
+
+    It's not working and it doesn't include Dale's secret.py code.
+    Piece together the latest complete creating_apps_in_kivy!
+    Get it from Office.MooreWorks.Org?
+
+
 Branch out Friday 20 October 2017 9:42 AM CST, I need to make some headway on project Interview Reporting (intRep)
 so can work on that project and refer to this project
 creating_apps_in_kivy to figure out MVC aspects of the intRep project?

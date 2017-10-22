@@ -60,8 +60,8 @@ class AddLocationForm(ModalView):
 # BEGIN ON_LOCATION
     @mainthread
     def on_location(self, **kwargs):
-        search_template = "http://api.openweathermap.org/data/2.5/" +
-            "weather?lat={}&lon={}"
+        search_template = ("http://api.openweathermap.org/data/2.5/" +
+            "weather?lat={}&lon={}")
         search_url = search_template.format(kwargs['lat'], kwargs['lon'])
         data = requests.get(search_url).json()
         location = (data['sys']['country'], data['name'])
